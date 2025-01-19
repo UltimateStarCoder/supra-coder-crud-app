@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         email: '',
@@ -14,6 +15,9 @@ export default function SignIn() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError('');
+
         try {
             const res = await signIn('credentials', {
                 email: formData.email,
@@ -21,14 +25,15 @@ export default function SignIn() {
                 redirect: false,
             });
 
-            if (res.error) {
-                setError('Invalid credentials');
+            if (res?.error) {
+                setError('Invalid email or password');
             } else {
-                router.push('/inventory-manager');
-                router.refresh();
+                router.replace('/inventory-manager');
             }
         } catch (error) {
             setError('Something went wrong');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -38,29 +43,50 @@ export default function SignIn() {
                 <div>
                     <h2 className="text-center text-3xl font-bold text-gray-900">Sign In</h2>
                 </div>
+                
                 {error && (
-                    <p className="text-red-500 text-center">{error}</p>
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                        {error}
+                    </div>
                 )}
+
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
-                        required
-                    />
+                    <div>
+                        <label htmlFor="email" className="sr-only">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Email address"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="password" className="sr-only">Password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        />
+                    </div>
+
                     <button
                         type="submit"
-                        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                        disabled={loading}
+                        className={`w-full py-2 px-4 rounded-md text-white ${
+                            loading 
+                            ? 'bg-blue-400 cursor-not-allowed' 
+                            : 'bg-blue-600 hover:bg-blue-700'
+                        }`}
                     >
-                        Sign In
+                        {loading ? 'Signing in...' : 'Sign In'}
                     </button>
                 </form>
             </div>

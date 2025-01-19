@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+'use client';
 
-'use client'
+import { useState, useEffect } from 'react'
 
 export default function InventoryPage() {
     const [inventory, setInventory] = useState([])

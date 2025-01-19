@@ -4,32 +4,33 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function SignUp() {
+export default function SignUpPage() {
     const router = useRouter();
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: ''
-    });
-    const [error, setError] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
         try {
             const res = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({ name, email, password })
             });
 
-            if (res.ok) {
-                router.push('/'); // Changed from '/api/auth/signin' to '/'
-            } else {
+            if (!res.ok) {
                 const data = await res.json();
-                setError(data.message);
+                setError(data.message || 'Signup failed');
+                return;
             }
-        } catch (error) {
-            setError('Something went wrong');
+
+            router.push('/'); // Changed from '/api/auth/signin' to '/'
+        } catch (err) {
+            console.error('Signup error:', err);
+            setError('An unexpected error occurred');
         }
     };
 
@@ -47,23 +48,26 @@ export default function SignUp() {
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <input
                         type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="Name"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
                         required
                     />
                     <input
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                     />
                     <input
                         type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
                         required
                     />
                     <button
