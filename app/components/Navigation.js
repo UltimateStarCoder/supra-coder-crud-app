@@ -20,6 +20,7 @@ export default function Navigation() {
                     <div className="space-x-4">
                         <Link href="/inventory-manager">My Items</Link>
                         <Link href="/inventory-manager/add">Add Item</Link>
+                        <Link href="/inventory-manager/world-inventory">World Inventory</Link>
                         <button 
                             onClick={handleSignOut}
                             className="text-white hover:text-gray-300"
