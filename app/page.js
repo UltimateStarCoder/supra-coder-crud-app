@@ -1,6 +1,5 @@
 'use client';
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -27,26 +26,57 @@ export default function Home() {
     fetchItems();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const truncateDescription = (description) => {
+    if (description.length > 100) {
+      return `${description.substring(0, 100)}...`;
+    }
+    return description;
+  };
+
+  if (loading) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="text-center">Loading...</div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="text-center">Error: {error}</div>
+    </div>
+  );
 
   return (
-    <div className="container mx-auto px-4 py-8 flex flex-col items-center min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Inventory Items</h1>
-      
-      {items.length === 0 ? (
-        <p className="text-gray-600 text-lg">Your inventory is empty...</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {items.map((item) => (
-            <div key={item._id} className="border p-4 rounded shadow hover:shadow-md transition-shadow">
-              <h2 className="text-xl font-semibold">{item.name}</h2>
-              <p className="text-gray-600 mt-2">{item.description}</p>
-              <p className="mt-1">Quantity: {item.quantity}</p>
-            </div>
-          ))}
+    <div className="min-h-screen p-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-center">World Inventory Overview</h1>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-6 py-3 text-left">Name</th>
+                <th className="px-6 py-3 text-left">Description</th>
+                <th className="px-6 py-3 text-center">Quantity</th>
+                <th className="px-6 py-3 text-center">Added Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {items.map((item) => (
+                <tr key={item._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 font-medium">{item.name}</td>
+                  <td className="px-6 py-4">{truncateDescription(item.description)}</td>
+                  <td className="px-6 py-4 text-center">{item.quantity}</td>
+                  <td className="px-6 py-4 text-center">
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+        {items.length === 0 && (
+          <p className="text-center text-gray-500 mt-4">No items found in the inventory.</p>
+        )}
+      </div>
     </div>
   );
 }
