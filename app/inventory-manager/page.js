@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 
+
 const InventoryManagerProtectedPage = () => {
     const { data: session } = useSession();
 
@@ -12,7 +13,7 @@ const InventoryManagerProtectedPage = () => {
     return (
         <div>
             <h1>Inventory Manager</h1>
-            <p>Welcome, {session.user.email}!</p>
+            <p>Welcome, {session.user.name}!</p>
         </div>
     );
 };
