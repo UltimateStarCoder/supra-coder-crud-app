@@ -4,67 +4,56 @@ import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
-if (!process.env.NEXTAUTH_SECRET) {
-    throw new Error("Please provide NEXTAUTH_SECRET environment variable");
-}
-
-export const authOptions = {
+const handler = NextAuth({
     providers: [
         CredentialsProvider({
-            name: "Credentials",
+            name: "credentials",
             credentials: {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error('Please provide email and password');
+                try {
+                    await connectToDatabase();
+                    
+                    // 1. Find user by email
+                    const user = await User.findOne({ email: credentials.email });
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
+
+                    // 2. Compare password with hashed password in database
+                    const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+                    if (!isPasswordValid) {
+                        throw new Error("Invalid password");
+                    }
+
+                    // 3. Return user object WITHOUT password
+                    return {
+                        id: user._id.toString(),
+                        email: user.email,
+                        name: user.name
+                    };
+                } catch (error) {
+                    throw new Error(error.message);
                 }
-
-                await connectToDatabase();
-
-                const user = await User.findOne({ email: credentials.email });
-                if (!user) throw new Error("No user found with this email.");
-
-                const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-                if (!isPasswordValid) throw new Error("Invalid password");
-
-                return {
-                    id: user._id.toString(),
-                    name: user.name,
-                    email: user.email,
-                };
             }
         })
     ],
-    pages: {
-        signIn: "/auth/signin",
-    },
-    secret: process.env.NEXTAUTH_SECRET,
     session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        strategy: "jwt"
+    },
+    pages: {
+        signIn: "/auth/signin"
     },
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-                token.email = user.email;
-                token.name = user.name;
-            }
-            return token;
-        },
         async session({ session, token }) {
-            if (session.user) {
-                session.user.id = token.id;
-                session.user.email = token.email;
-                session.user.name = token.name;
+            if (token && session.user) {
+                session.user.id = token.sub;
             }
             return session;
-        },
-    },
-    debug: process.env.NODE_ENV === 'development',
-};
+        }
+    }
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

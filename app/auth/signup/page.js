@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from "next-auth/react";
 
 const SignUpPage = () => {
   const router = useRouter();
@@ -32,7 +33,18 @@ const SignUpPage = () => {
       });
 
       if (response.ok) {
-        router.push('/auth/signin');
+        // Sign in the user immediately after successful signup
+        const result = await signIn('credentials', {
+          email: form.email,
+          password: form.password,
+          redirect: false,
+        });
+
+        if (result.error) {
+          setError(result.error);
+        } else {
+          router.push('/inventory-manager');
+        }
       } else {
         const data = await response.json();
         setError(data.message || 'Something went wrong');

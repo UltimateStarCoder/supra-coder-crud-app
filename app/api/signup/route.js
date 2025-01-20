@@ -35,8 +35,18 @@ export async function POST(request) {
             password: hashedPassword,
         });
 
+        // Return user data without password
+        const userData = {
+            id: newUser._id.toString(),
+            name: newUser.name,
+            email: newUser.email
+        };
+
         return NextResponse.json(
-            { message: "User created successfully" },
+            { 
+                message: "User created successfully",
+                user: userData 
+            },
             { status: 201 }
         );
     } catch (error) {
