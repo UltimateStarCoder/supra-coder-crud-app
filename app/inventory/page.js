@@ -45,7 +45,6 @@ export default function InventoryPage() {
                         <div key={item.id} className="border p-3 rounded">
                             <h3 className="font-semibold">{item.name}</h3>
                             <p>Quantity: {item.quantity}</p>
-                            <p>Price: ${item.price}</p>
                         </div>
                     ))}
                 </div>

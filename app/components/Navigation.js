@@ -16,7 +16,7 @@ export default function Navigation() {
         return (
             <nav className="bg-slate-800 text-white p-4">
                 <div className="flex justify-between items-center max-w-7xl mx-auto">
-                    <h1 className="text-xl font-bold">Welcome, {session.user.name || session.user.email}</h1>
+                    <h1 className="text-xl font-bold">Welcome Inventory Manager, {session.user.name || session.user.email}</h1>
                     <div className="space-x-4">
                         <Link href="/inventory-manager">My Items</Link>
                         <Link href="/inventory-manager/add">Add Item</Link>
