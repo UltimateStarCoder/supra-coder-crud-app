@@ -1,35 +1,15 @@
 'use client';
-
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 export default function Navigation() {
-    const { data: session, status } = useSession();
-    const router = useRouter();
+    const { data: session } = useSession();
 
-    const handleSignOut = async () => {
-        try {
-            await signOut({ 
-                callbackUrl: '/',
-                redirect: true
-            });
-        } catch (error) {
-            console.error('Sign out error:', error);
-        }
+    const handleSignOut = () => {
+        signOut();
     };
 
-    if (status === 'loading') {
-        return (
-            <nav className="bg-slate-800 text-white p-4">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-xl font-bold">Loading...</h1>
-                </div>
-            </nav>
-        );
-    }
-
-    if (status === 'authenticated' && session?.user) {
+    if (session?.user) {
         return (
             <nav className="bg-slate-800 text-white p-4">
                 <div className="flex justify-between items-center max-w-7xl mx-auto">
@@ -56,8 +36,8 @@ export default function Navigation() {
                 <h1 className="text-xl font-bold">Supra Coder CRUD App</h1>
                 <div className="space-x-4">
                     <Link href="/">Home</Link>
-                    <Link href="/signup">Sign Up</Link>
-                    <Link href="/signin">Sign In</Link>
+                    <Link href="/auth/signup">Sign Up</Link>
+                    <Link href="/auth/signin">Sign In</Link>
                 </div>
             </div>
         </nav>

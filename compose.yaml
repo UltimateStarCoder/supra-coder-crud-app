@@ -11,7 +11,8 @@ services:
       - .env
       - .env.local
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - app_network
 
@@ -24,8 +25,18 @@ services:
       MONGO_INITDB_DATABASE: mydatabase
     ports:
       - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - app_network
+
+volumes:
+  mongodb_data:
 
 networks:
   app_network:
