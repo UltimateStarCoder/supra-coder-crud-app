@@ -21,7 +21,13 @@ This is the current web URL as of January 2025.
 
 ## Quick Start
 
-To launch the application after installing and running Docker Desktop, simply execute:
+If you've previously run the application, first clean up existing containers and volumes:
+```bash
+docker-compose down -v
+```
+> Note: The `-v` flag removes all volumes associated with the containers, ensuring a clean start.
+
+Then, to launch the application:
 ```bash
 docker-compose up --build -d
 ```
