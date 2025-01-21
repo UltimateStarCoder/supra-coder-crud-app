@@ -7,7 +7,7 @@ Thanks for evaluating my CRUD Application. Looking forward to earning the Z-Pref
 Before starting, please ensure you have:
 - Docker Desktop installed and running on your machine
 - Make sure Ports 3000 and 27017 are free and not being used by other applications
-- Created a `.env` file in the root directory with the following content:
+- Created a `.env` and a `.env.local` file in the root directory with the following content:
 ```env
 # MongoDB Configuration
 MONGODB_URI=mongodb://admin:password123@mongodb:27017/mydatabase?authSource=admin
