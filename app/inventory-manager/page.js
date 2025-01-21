@@ -85,6 +85,24 @@ const InventoryManagerProtectedPage = () => {
         setEditForm({ name: '', quantity: '', description: '' });
     };
 
+    const handleDelete = async (itemId) => {
+        if (!confirm('Are you sure you want to delete this item?')) return;
+        
+        try {
+            const response = await fetch(`/api/items/${itemId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                setItems(items.filter(item => item._id !== itemId));
+            } else {
+                throw new Error('Failed to delete item');
+            }
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
+    };
+
     return (
         <div className="min-h-screen p-6">
             <div className="max-w-7xl mx-auto">
@@ -140,8 +158,9 @@ const InventoryManagerProtectedPage = () => {
                                             <td className="px-6 py-4">{item.description}</td>
                                             <td className="px-6 py-4 text-center">{item.quantity}</td>
                                             <td className="px-6 py-4 text-center">{new Date(item.createdAt).toLocaleDateString()}</td>
-                                            <td className="px-6 py-4 text-center">
+                                            <td className="px-6 py-4 text-center space-x-2">
                                                 <button onClick={() => handleEdit(item)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
+                                                <button onClick={() => handleDelete(item._id)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
                                             </td>
                                         </>
                                     )}

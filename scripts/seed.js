@@ -26,6 +26,18 @@ const seedData = [
         description: "A scroll containing basic fire spells",
         quantity: 30,
         createdBy: "admin"
+    },
+    {
+        name: "777 Elixir",
+        description: "A mystical elixir that brings immense fortune and luck to the drinker. Its golden hue shimmers with magical potential, crafted from the rarest celestial ingredients found only during the alignment of seven stars. The number 777 is etched in glowing runes on the crystal vial.",
+        quantity: 77,
+        createdBy: "admin"
+    },
+    {
+        name: "Lucky Blade",
+        description: "This legendary sword was forged during the 777th cycle of the lunar calendar. Its blade gleams with an otherworldly light, said to bring good fortune to its wielder. Seven enchanted gems are embedded in its hilt.",
+        quantity: 7,
+        createdBy: "admin"
     }
 ];
 

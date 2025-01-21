@@ -56,3 +56,27 @@ export async function GET(request) {
         );
     }
 }
+
+export async function DELETE(request, { params }) {
+    try {
+        const { id } = params;
+        await connectToDatabase();
+        
+        const deletedItem = await Item.findByIdAndDelete(id);
+        
+        if (!deletedItem) {
+            return NextResponse.json(
+                { message: "Item not found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json({ message: "Item deleted successfully" });
+    } catch (error) {
+        console.error('Delete error:', error);
+        return NextResponse.json(
+            { message: "Error deleting item", error: error.message },
+            { status: 500 }
+        );
+    }
+}
