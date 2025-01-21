@@ -35,6 +35,22 @@ services:
     networks:
       - app_network
 
+  seeder:
+    container_name: db_seeder
+    build: .
+    command: sh -c "sleep 5 && node scripts/seed.js"
+    environment:
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/mydatabase?authSource=admin
+    env_file:
+      - .env
+      - .env.local
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: on-failure:3
+    networks:
+      - app_network
+
 volumes:
   mongodb_data:
 
