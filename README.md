@@ -8,7 +8,7 @@ Before starting, please ensure you have:
 - Docker Desktop installed and running on your machine
 - Make sure Ports 3000 and 27017 are free and not being used by other applications
 - Created a `.env` and a `.env.local` file in the root directory with the following content:
-```env
+```.env and env.local
 # MongoDB Configuration
 MONGODB_URI=mongodb://admin:password123@mongodb:27017/mydatabase?authSource=admin
 NEXTAUTH_SECRET=7FL5nbJj5tmI/c4id5bTkvVUo94sdSed2teiWMGeVDg=
