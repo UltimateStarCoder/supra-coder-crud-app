@@ -57,58 +57,58 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="name">
+            <label className="block text-gray-700 dark:text-gray-200 mb-2" htmlFor="name">
               Name
             </label>
             <input
               type="text"
               id="name"
               name="name"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               value={form.name}
               onChange={handleChange}
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="email">
+            <label className="block text-gray-700 dark:text-gray-200 mb-2" htmlFor="email">
               Email
             </label>
             <input
               type="email"
               id="email"
               name="email"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               value={form.email}
               onChange={handleChange}
               required
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="password">
+            <label className="block text-gray-700 dark:text-gray-200 mb-2" htmlFor="password">
               Password
             </label>
             <input
               type="password"
               id="password"
               name="password"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               value={form.password}
               onChange={handleChange}
               required
             />
           </div>
           {error && (
-            <div className="mb-4 text-red-500">{error}</div>
+            <div className="mb-4 text-red-500 dark:text-red-400">{error}</div>
           )}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:opacity-50"
             disabled={loading}
           >
             {loading ? 'Signing up...' : 'Sign Up'}

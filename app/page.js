@@ -48,24 +48,24 @@ export default function Home() {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-center">World Inventory Overview</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">World Inventory Overview</h1>
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100">
+          <table className="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-gray-100 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-3 text-left">Name</th>
-                <th className="px-6 py-3 text-left">Description</th>
-                <th className="px-6 py-3 text-center">Quantity</th>
-                <th className="px-6 py-3 text-center">Added Date</th>
+                <th className="px-6 py-3 text-left text-gray-900 dark:text-gray-100">Name</th>
+                <th className="px-6 py-3 text-left text-gray-900 dark:text-gray-100">Description</th>
+                <th className="px-6 py-3 text-center text-gray-900 dark:text-gray-100">Quantity</th>
+                <th className="px-6 py-3 text-center text-gray-900 dark:text-gray-100">Added Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
               {items.map((item) => (
-                <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-medium">{item.name}</td>
-                  <td className="px-6 py-4">{truncateDescription(item.description)}</td>
-                  <td className="px-6 py-4 text-center">{item.quantity}</td>
-                  <td className="px-6 py-4 text-center">
+                <tr key={item._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">{item.name}</td>
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">{truncateDescription(item.description)}</td>
+                  <td className="px-6 py-4 text-center text-gray-700 dark:text-gray-300">{item.quantity}</td>
+                  <td className="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
                     {new Date(item.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
@@ -74,7 +74,7 @@ export default function Home() {
           </table>
         </div>
         {items.length === 0 && (
-          <p className="text-center text-gray-500 mt-4">No items found in the inventory.</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 mt-4">No items found in the inventory.</p>
         )}
       </div>
     </div>
