@@ -1,9 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function AddItem() {
     const router = useRouter();
+    const { data: session } = useSession();
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         quantity: '',
@@ -12,22 +15,28 @@ export default function AddItem() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!session?.user?.email) return;
         
+        setLoading(true);
         try {
             const response = await fetch('/api/items', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ 
+                    ...formData,
+                    createdBy: session.user.email
+                }),
             });
 
-            if (response.ok) {
-                router.push('/inventory-manager');
-                router.refresh();
-            }
+            if (!response.ok) throw new Error('Failed to add item');
+            router.push('/inventory-manager');
+            router.refresh();
         } catch (error) {
             console.error('Error adding item:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -66,9 +75,10 @@ export default function AddItem() {
                 </div>
                 <button 
                     type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    disabled={loading}
+                    className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                    Add Item
+                    {loading ? 'Adding...' : 'Add Item'}
                 </button>
             </form>
         </div>

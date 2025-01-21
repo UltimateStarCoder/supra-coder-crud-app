@@ -15,20 +15,22 @@ const InventoryManagerProtectedPage = () => {
 
     useEffect(() => {
         const fetchItems = async () => {
+            if (!session?.user?.email) return;
+            
             try {
-                const response = await fetch('/api/items');
+                const response = await fetch(`/api/items/personal-items?createdBy=${session.user.email}`);
+                if (!response.ok) throw new Error('Failed to fetch items');
                 const data = await response.json();
-                setItems(data);
+                setItems(data || []);
             } catch (error) {
                 console.error('Error fetching items:', error);
+                setItems([]);
             } finally {
                 setLoading(false);
             }
         };
 
-        if (session) {
-            fetchItems();
-        }
+        fetchItems();
     }, [session]);
 
     if (!session) {

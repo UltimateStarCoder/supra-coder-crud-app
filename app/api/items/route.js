@@ -17,7 +17,7 @@ export async function GET() {
 
 export async function POST(request) {
     try {
-        const { name, description, quantity } = await request.json();
+        const { name, description, quantity, createdBy } = await request.json();
 
         if (!name || !description || !quantity) {
             return NextResponse.json(
@@ -31,7 +31,8 @@ export async function POST(request) {
         const newItem = await Item.create({
             name,
             description,
-            quantity
+            quantity,
+            createdBy
         });
 
         return NextResponse.json(
