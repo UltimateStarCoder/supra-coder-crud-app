@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function AddItem() {
     const router = useRouter();
@@ -78,7 +79,7 @@ export default function AddItem() {
                     disabled={loading}
                     className={`bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                    {loading ? 'Adding...' : 'Add Item'}
+                    {loading ? <LoadingSpinner size="small" /> : 'Add Item'}
                 </button>
             </form>
         </div>

@@ -1,6 +1,7 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const InventoryManagerProtectedPage = () => {
     const { data: session } = useSession();
@@ -44,7 +45,7 @@ const InventoryManagerProtectedPage = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
-                <div className="text-center">Loading...</div>
+                <LoadingSpinner size="large" />
             </div>
         );
     }
